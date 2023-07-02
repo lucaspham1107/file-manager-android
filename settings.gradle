@@ -12,5 +12,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "FileManagerAndroid"
 include ':app'
+include ':library'
+project(':library').projectDir=new File('./core/source/')
+rootProject.name = "FileManagerAndroid"
+
+

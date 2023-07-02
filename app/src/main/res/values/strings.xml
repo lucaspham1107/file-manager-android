@@ -1,7 +1,7 @@
 <resources>
-    <string name="ads_mob_id">ca-app-pub-6569277087635149~2711864915</string>
-    <string name="banner_ads_id">ca-app-pub-6569277087635149/2440348273</string>
-    <string name="inter_ads_id">ca-app-pub-6569277087635149/2336406490</string>
-    <string name="open_ads_id">ca-app-pub-6569277087635149/9947303202</string>
-    <string name="native_ads_id">ca-app-pub-6569277087635149/3561858259</string>
+    <string name="ads_mob_id">ca-app-pub-6569277087635149~4763313181</string>
+    <string name="banner_ads_id">ca-app-pub-6569277087635149/9744123223</string>
+    <string name="inter_ads_id">ca-app-pub-6569277087635149/3381894857</string>
+    <string name="open_ads_id">ca-app-pub-6569277087635149/9413004637</string>
+    <string name="native_ads_id">ca-app-pub-6569277087635149/4938519100</string>
 </resources>
