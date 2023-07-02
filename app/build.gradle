@@ -1,0 +1,175 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id "androidx.navigation.safeargs.kotlin"
+    id 'com.google.firebase.crashlytics'
+    id 'io.github.islamkhsh.xdimen'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.appforlife.filemanager'
+    compileSdk 33
+
+    signingConfigs {
+        keystore {
+            keyAlias 'appforlife@2023'
+            keyPassword 'appforlife@2023'
+            storeFile file('../keystore/keystore')
+            storePassword 'appforlife@2023'
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.appforlife.filemanager"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        resConfigs "en"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
+        }
+        debug {
+            debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
+        }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        dev {
+            //no ads and full features - for dev
+            resValue "string", "app_name", "File Manager (dev)"
+            buildConfigField("Boolean", "SHOW_ADS", "true")
+            buildConfigField("Boolean", "TESTING_ADS", "true")
+            buildConfigField(
+                    "Boolean",
+                    "TESTING_PURCHASE",
+                    "true"
+            )
+            buildConfigField("Boolean", "QUOTA_LIMIT", "false")
+            buildConfigField(
+                    "Boolean",
+                    "LOG_EVENT_TRACKING",
+                    "false"
+            )
+            buildConfigField(
+                    "Boolean",
+                    "APPLY_TEST_VERSION",
+                    "true"
+            )
+            dimension "default"
+            signingConfig signingConfigs.keystore
+        }
+
+        production {
+            buildConfigField("Boolean", "SHOW_ADS", "true")
+            buildConfigField("Boolean", "TESTING_ADS", "false")
+            buildConfigField(
+                    "Boolean",
+                    "TESTING_PURCHASE",
+                    "false"
+            )
+            buildConfigField("Boolean", "QUOTA_LIMIT", "true")
+            buildConfigField(
+                    "Boolean",
+                    "LOG_EVENT_TRACKING",
+                    "true"
+            )
+            buildConfigField(
+                    "Boolean",
+                    "APPLY_TEST_VERSION",
+                    "false"
+            )
+            //enable ads and subscription required
+            resValue "string", "app_name", "Air Play"
+            dimension "default"
+            signingConfig signingConfigs.keystore
+        }
+    }
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+    kapt {
+        correctErrorTypes true
+    }
+
+    packagingOptions {
+        exclude 'META-INF/*'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.46.1"
+    kapt "com.google.dagger:hilt-android-compiler:2.46.1"
+
+    implementation 'com.google.android.gms:play-services-ads:22.1.0'
+
+}
+
+xdimen {
+    deleteOldXdimen.set(true)
+    designWidth.set(360) // required
+    designDpi.set(mdpi())
+    targetDevicesWidth.set(phonePortrait)
+    dimensRange {
+        minDimen.set(-10)
+        maxDimen.set(500)
+        step.set(0.5d)
+    }
+    fontsRange {
+        minDimen.set(10)
+        maxDimen.set(60)
+        step.set(0.5d)
+    }
+}

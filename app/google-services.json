@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "70268453914",
+    "project_id": "file-manager-android",
+    "storage_bucket": "file-manager-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70268453914:android:efc10746f12417fdf73da3",
+        "android_client_info": {
+          "package_name": "com.appforlife.filemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70268453914-3mrsrhf1c9luaa1bf916mtbmokoch7bu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8255qJOH07SzeQQ8vA3AVpyI2VjeJZp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70268453914-3mrsrhf1c9luaa1bf916mtbmokoch7bu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
