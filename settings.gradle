@@ -10,11 +10,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        mavenLocal()
     }
 }
+rootProject.name = "FileManager"
 include ':app'
-include ':library'
-project(':library').projectDir=new File('./core/source/')
-rootProject.name = "FileManagerAndroid"
-
-

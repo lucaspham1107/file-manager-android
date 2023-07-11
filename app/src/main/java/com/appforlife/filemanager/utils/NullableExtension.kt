@@ -1,6 +1,6 @@
 package com.appforlife.filemanager.utils
 
-import java.util.*
+import java.util.Date
 
 fun String?.default(default: String): String {
     return this ?: default
@@ -39,7 +39,7 @@ fun Float?.default(default: Float): Float {
 }
 
 fun Float?.defaultZero(): Float {
-    return this.default(0f)
+    return this.default(0.0f)
 }
 
 fun <T> List<T>?.defaultEmpty(): List<T> {

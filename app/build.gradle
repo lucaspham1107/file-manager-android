@@ -4,10 +4,9 @@ plugins {
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id "androidx.navigation.safeargs.kotlin"
+    id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.firebase.crashlytics'
     id 'io.github.islamkhsh.xdimen'
-    id 'kotlin-parcelize'
 }
 
 android {
@@ -27,8 +26,8 @@ android {
         applicationId "com.appforlife.filemanager"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         multiDexEnabled true
         resConfigs "en"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -56,12 +55,14 @@ android {
         release {
             debuggable false
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
         }
         debug {
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
         }
@@ -115,7 +116,7 @@ android {
                     "false"
             )
             //enable ads and subscription required
-            resValue "string", "app_name", "Air Play"
+            resValue "string", "app_name", "File Manager"
             dimension "default"
             signingConfig signingConfigs.keystore
         }
@@ -142,35 +143,26 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation(project(":library"))
+
+    implementation 'me.grantland:autofittextview:0.2.1'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-common-ktx:20.3.3'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation "com.airbnb.android:lottie:4.2.2"
 
-    // Hilt
-    implementation "com.google.dagger:hilt-android:2.46.1"
-    kapt "com.google.dagger:hilt-android-compiler:2.46.1"
 
-    implementation 'com.google.android.gms:play-services-ads:22.1.0'
+    implementation "com.android.support:multidex:1.0.3"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation 'com.github.bumptech.glide:glide:4.13.2'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
-
-    implementation 'com.google.code.gson:gson:2.10'
-
-    //multidex
-    def multidex_version = "2.0.1"
-    implementation "androidx.multidex:multidex:$multidex_version"
-
-    def billing_version = "5.0.0"
-
-    implementation "com.android.billingclient:billing-ktx:$billing_version"
-
+    // lifecycle
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
 
     // navigation
     implementation "androidx.navigation:navigation-dynamic-features-fragment:2.5.2"
@@ -178,7 +170,48 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
     androidTestImplementation "androidx.navigation:navigation-testing:2.5.2"
 
+    implementation("com.afollestad.material-dialogs:lifecycle:3.3.0")
 
+    implementation 'com.google.code.gson:gson:2.10'
+
+    def billing_version = "5.0.0"
+
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
+
+    implementation 'com.google.android.gms:play-services-ads:22.1.0'
+
+    //Datetime
+    implementation 'joda-time:joda-time:2.11.0'
+
+    implementation 'io.github.ParkSangGwon:tedpermission-coroutine:3.3.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+    //indicator
+    implementation 'com.tbuonomo:dotsindicator:4.2'
+
+    implementation 'com.patrickpissurno:ripple-effect:1.3.1'
+    implementation 'com.google.android.gms:play-services-ads:22.1.0'
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.46.1"
+    kapt "com.google.dagger:hilt-android-compiler:2.46.1"
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    implementation 'com.google.android.play:core:1.10.3'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
+
+    implementation "io.reactivex.rxjava3:rxjava:3.0.8"
+    implementation "io.reactivex.rxjava3:rxkotlin:3.0.0"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+    implementation 'com.github.mmmelik:RoundedImageView:v1.0.1'
 }
 
 xdimen {

@@ -3,14 +3,13 @@ package com.appforlife.filemanager.di
 import android.app.Application
 import com.appforlife.filemanager.BuildConfig
 import com.appforlife.filemanager.R
-import com.appforlife.filemanager.data.RemoteConfigValues
+import com.appforlife.filemanager.data.base.QuotaLimitReached
+import com.appforlife.filemanager.data.base.RemoteConfigValues
+import com.appforlife.filemanager.data.base.StoreConfigItem
 import com.appforlife.filemanager.database.AppSharePreference
-import com.moniqtap.source.data.StoreConfigItem
-import com.moniqtap.source.management.AdsManager
-import com.moniqtap.source.management.BillingClientManager
-import com.moniqtap.source.management.ClientRatingManager
-import com.moniqtap.source.management.QuotaLimitManager
-import com.moniqtap.source.utils.showLog
+import com.appforlife.filemanager.management.*
+import com.appforlife.filemanager.utils.convert
+import com.appforlife.filemanager.utils.showLog
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +30,7 @@ class ApplicationModule {
             interstitialUnitId = app.getString(R.string.inter_ads_id),
             bannerId = app.getString(R.string.banner_ads_id),
             nativeAdsId = app.getString(R.string.native_ads_id),
-            openAppAdsId = app.getString(R.string.open_ads_id)
+            openAppAdsId = RemoteConfigValues.ADS_APP_OPEN_ID.second.convert()
         )
 
     @Provides
@@ -54,6 +53,7 @@ class ApplicationModule {
             listOf()
         ) { type ->
             "OnQuotaReach: $type".showLog()
+            logEventTracking(QuotaLimitReached(type))
         }.apply {
             isQuotaLimit = BuildConfig.QUOTA_LIMIT
         }
@@ -61,7 +61,6 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun providePreference(app: Application) = AppSharePreference(app)
-
 
 
 }

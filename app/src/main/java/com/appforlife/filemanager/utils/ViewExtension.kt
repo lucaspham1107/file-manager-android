@@ -1,189 +1,197 @@
 package com.appforlife.filemanager.utils
 
-import android.animation.TimeInterpolator
-import android.animation.ValueAnimator
-import android.app.AlertDialog
-import android.content.ClipData
-import android.content.ClipboardManager
+import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
-import android.os.Handler
+import android.graphics.drawable.ColorDrawable
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
+import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.databinding.BindingAdapter
+import androidx.core.text.toSpannable
+import androidx.core.view.isVisible
+import androidx.transition.Fade
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.appforlife.filemanager.R
-import java.util.*
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
+import com.google.android.material.snackbar.Snackbar
 
-private const val SECOND = 1
-private const val MINUTE = 60 * SECOND
-private const val HOUR = 60 * MINUTE
-private const val DAY = 24 * HOUR
-private const val MONTH = 30 * DAY
-private const val YEAR = 12 * MONTH
 
-private fun currentDate(): Long {
-    val calendar = Calendar.getInstance()
-    return calendar.timeInMillis
-}
-
-fun Long.toTimeAgo(): String {
-    val time = this
-    val now = currentDate()
-    val diff = (now - time) / 1000
-    return when {
-        diff < MINUTE -> "just now"
-        diff < 2 * MINUTE -> "a minute ago"
-        diff < 60 * MINUTE -> "${diff / MINUTE} minutes ago"
-        diff < 2 * HOUR -> "an hour ago"
-        diff < 24 * HOUR -> "${diff / HOUR} hours ago"
-        diff < 2 * DAY -> "yesterday"
-        diff < 30 * DAY -> "${diff / DAY} days ago"
-        diff < 2 * MONTH -> "a month ago"
-        diff < 12 * MONTH -> "${diff / MONTH} months ago"
-        diff < 2 * YEAR -> "a year ago"
-        else -> "${diff / YEAR} years ago"
+fun View.marginPx(left: Int? = null, top: Int? = null, right: Int? = null, bottom: Int? = null) {
+    layoutParams<ViewGroup.MarginLayoutParams> {
+        left?.run { leftMargin = this }
+        top?.run { topMargin = this }
+        right?.run { rightMargin = this }
+        bottom?.run { bottomMargin = this }
     }
 }
 
-fun View.setOnSingleClickListener(action: (View) -> Unit) {
-    setOnClickListener { view ->
-        view.isClickable = false
-        action(view)
-        view.postDelayed({
-            view.isClickable = true
-        }, 300L)
-    }
+/*fun NativeAdView.populateUnifiedNativeAdView(nativeAd: NativeAd) {
+    mediaView = findViewById(R.id.media_view)
+    bodyView = findViewById(R.id.body)
+
+    headlineView = findViewById(R.id.primary)
+    callToActionView = findViewById(R.id.cta)
+    iconView = findViewById(R.id.icon)
+
+    (headlineView as? TextView)?.text = nativeAd.headline
+    nativeAd.mediaContent?.let { mediaView?.setMediaContent(it) }
+
+    bodyView?.isVisible = nativeAd.body != null
+    callToActionView?.isVisible = nativeAd.callToAction != null
+    iconView?.isVisible = nativeAd.icon != null
+    priceView?.isVisible = nativeAd.price != null
+    storeView?.isVisible = nativeAd.store != null
+    advertiserView?.isVisible = nativeAd.advertiser != null
+    (bodyView as? TextView)?.text = nativeAd.body
+    (callToActionView as? TextView)?.text = nativeAd.callToAction
+    (iconView as? ImageView)?.setImageDrawable(nativeAd.icon?.drawable)
+    setNativeAd(nativeAd)
+}*/
+
+inline fun <reified T : ViewGroup.LayoutParams> View.layoutParams(block: T.() -> Unit) {
+    if (layoutParams is T) block(layoutParams as T)
 }
 
-fun View.showKeyBoard(delay: Long? = null) {
-    delay?.let {
-        Handler().postDelayed({
-            (context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
-                ?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        }, it)
-    } ?: run {
-        (context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
-            ?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-}
-
-fun View.hideKeyBoard() {
-    (context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
-        ?.hideSoftInputFromWindow(this.windowToken, 0)
-}
-
-fun TextView.setTextClickable(data: String, from: Int, to: Int, method: () -> Unit) {
-    val spanned = SpannableString(data)
-    val clickableSpan = object : ClickableSpan() {
-        override fun onClick(widget: View) {
-            method.invoke()
-        }
-
-        override fun updateDrawState(ds: TextPaint) {
-            ds.isUnderlineText = false
-        }
-    }
-    spanned.setSpan(
-        ForegroundColorSpan(ContextCompat.getColor(context, R.color.white)),
-        from,
-        to,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+fun Window.setFullScreen() {
+    this.setFlags(
+        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
     )
-    spanned.setSpan(
-        clickableSpan,
-        from,
-        to,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+}
+
+fun View.dpToPx(dp: Float): Int = context.dpToPx(dp)
+fun Context.dpToPx(dp: Float): Int =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
+
+fun View.hideDown(parent: ViewGroup, duration: Long = 600) {
+    val tagAnim = "hideDown"
+    if (this.tag != tagAnim) {
+        this.tag = tagAnim
+        val transition: Transition = Fade()
+        transition.duration = duration
+        transition.addTarget(this)
+        TransitionManager.beginDelayedTransition(parent, transition)
+        this.visibility = View.GONE
+    }
+
+}
+
+fun View.showUp(parent: ViewGroup, duration: Long = 600) {
+    val tagAnim = "showUp"
+    if (this.tag != tagAnim) {
+        this.tag = tagAnim
+        val transition: Transition = Fade()
+        transition.duration = duration
+        transition.addTarget(this)
+        TransitionManager.beginDelayedTransition(parent, transition)
+        this.visibility = View.VISIBLE
+    }
+
+}
+
+fun Dialog.applyWidthHeight(context: Context, height: Float? = null) {
+    val widthPercent = 0.87f
+    val heightPercent = height ?: 0.34f
+    val screenSize = ScreenMetricsCompat.getScreenSize(context)
+    window?.setLayout(
+        (screenSize.width * widthPercent).toInt(),
+        (screenSize.height * heightPercent).toInt()
     )
-    movementMethod = LinkMovementMethod.getInstance()
-    highlightColor = Color.TRANSPARENT
-    text = spanned
+    window?.setGravity(Gravity.CENTER)
+    window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }
 
-@BindingAdapter("goneUnless")
-fun goneUnless(view: View, visible: Boolean) {
-    view.visibility = if (visible) View.VISIBLE else View.GONE
+fun Dialog.applyKeyInputWidthHeight(context: Context) {
+    val widthPercent = 0.87f
+    val heightPercent = 0.15f
+    val screenSize = ScreenMetricsCompat.getScreenSize(context)
+    window?.setLayout(
+        (screenSize.width * widthPercent).toInt(),
+        (screenSize.height * heightPercent).toInt()
+    )
+    window?.setGravity(Gravity.CENTER)
+    window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }
 
-fun View.show() {
-    visibility = View.VISIBLE
+fun Spannable.setColorForPath(paths: Array<String>, color: Int): Spannable {
+    val str = this.toString()
+    val spannableStringBuilder = SpannableStringBuilder().append(str)
+    for (i in paths.indices) {
+        spannableStringBuilder.setColorMatchTexts(color, paths[i])
+    }
+    return spannableStringBuilder.toSpannable()
 }
 
-fun View.hide() {
-    visibility = View.INVISIBLE
+
+fun SpannableStringBuilder.setColorMatchTexts(color: Int, keyText: String): SpannableStringBuilder {
+    var starIndex = this.toString().indexOf(keyText)
+    while (starIndex >= 0) {
+        val start = starIndex
+        val end = start + keyText.length
+        setColor(color, start, end)
+        starIndex = this.toString().indexOf(keyText, starIndex + 1)
+    }
+    return this
 }
 
-fun View.gone() {
-    visibility = View.GONE
+fun SpannableStringBuilder.setColor(color: Int, start: Int, end: Int): SpannableStringBuilder {
+    if (start >= 0 && end <= length && start <= end) {
+        setSpan(
+            ForegroundColorSpan(color),
+            start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    }
+    return this
 }
 
-fun Context.copyToClipboard(content: String, message: String) {
-    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(content, content)
-    clipboard.setPrimaryClip(clip)
-    toast(message)
+fun View?.onDebounceClickListener(action: () -> Unit) {
+    this?.setOnClickListener(object : DebouncedClickListener(DEFAULT_DEBOUNCING_TIME) {
+        override fun onDebouncedClick(v: View?) {
+            action.invoke()
+        }
+    })
 }
 
-fun Context.toast(message: Int) {
-    Toast.makeText(this, this.getString(message), Toast.LENGTH_SHORT).show()
+fun getDuration(context: Context?, uri: Uri?): Long {
+    val retriever = MediaMetadataRetriever()
+    return try {
+        retriever.setDataSource(context, uri)
+        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong() ?: 0
+    } catch (e: Exception) {
+        handleException(e)
+        0L
+    } finally {
+        retriever.release()
+    }
 }
 
-fun Context.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-}
-
-fun Context.showDialog(
-    title: String,
+fun View.showSnackBar(
     message: String,
-    cancelable: Boolean? = true,
-    listener: DialogInterface.OnClickListener? = null
+    retryActionName: String? = null,
+    action: (() -> Unit)? = null
 ) {
-    AlertDialog.Builder(this)
-        .setTitle(title)
-        .setMessage(message)
-        .setCancelable(cancelable ?: true)
-        .setPositiveButton(android.R.string.ok, listener)
-        .show()
+    val snackBar = Snackbar.make(this, message, Snackbar.LENGTH_LONG)
+
+    action?.let {
+        snackBar.setAction(retryActionName) {
+            it()
+        }
+    }
+
+    snackBar.show()
 }
 
-fun Context.showYesNoDialog(
-    message: Int,
-    positive: Int,
-    negative: Int,
-    cancelable: Boolean? = false,
-    yesListener: DialogInterface.OnClickListener? = null,
-    noListener: DialogInterface.OnClickListener? = null
-) {
-    AlertDialog.Builder(this)
-        .setMessage(message)
-        .setCancelable(cancelable ?: false)
-        .setPositiveButton(positive, yesListener)
-        .setNegativeButton(negative, noListener)
-        .show()
-}
-
-inline fun getValueAnimator(
-    forward: Boolean = true,
-    duration: Long,
-    interpolator: TimeInterpolator,
-    crossinline updateListener: (progress: Float) -> Unit
-): ValueAnimator {
-    val a =
-        if (forward) ValueAnimator.ofFloat(0f, 1f)
-        else ValueAnimator.ofFloat(1f, 0f)
-    a.addUpdateListener { updateListener(it.animatedValue as Float) }
-    a.duration = duration
-    a.interpolator = interpolator
-    return a
-}
 

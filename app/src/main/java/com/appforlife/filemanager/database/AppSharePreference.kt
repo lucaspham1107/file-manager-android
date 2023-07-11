@@ -1,7 +1,7 @@
 package com.appforlife.filemanager.database
 
 import android.app.Application
-import com.moniqtap.source.base.BaseSharePreference
+import com.appforlife.filemanager.base.BaseSharePreference
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,17 +1,17 @@
 package com.appforlife.filemanager
 
-import com.appforlife.filemanager.data.RemoteConfigValues
+import com.appforlife.filemanager.base.BaseApplication
+import com.appforlife.filemanager.data.base.RemoteConfigValues
+import com.appforlife.filemanager.data.base.StoreConfigItem
+import com.appforlife.filemanager.management.AdsManager
+import com.appforlife.filemanager.management.BillingClientManager
+import com.appforlife.filemanager.management.QuotaLimitManager
+import com.appforlife.filemanager.utils.CustomPair
+import com.appforlife.filemanager.utils.convert
+import com.appforlife.filemanager.utils.jsonToMap
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseAppLifecycleListener
 import com.google.firebase.FirebaseOptions
-import com.moniqtap.source.BaseApplication
-import com.moniqtap.source.data.StoreConfigItem
-import com.moniqtap.source.management.AdsManager
-import com.moniqtap.source.management.BillingClientManager
-import com.moniqtap.source.management.QuotaLimitManager
-import com.moniqtap.source.utils.CustomPair
-import com.moniqtap.source.utils.convert
-import com.moniqtap.source.utils.jsonToMap
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 

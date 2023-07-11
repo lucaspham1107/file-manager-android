@@ -1,9 +1,88 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Filemanager" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#0F0A2B</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:navigationBarColor">@color/main_screen_background_color</item>
     </style>
 
-    <style name="Theme.Filemanager" parent="Base.Theme.Filemanager" />
+    <style name="AppTheme.Splash">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="remote_btn">
+        <item name="cornerSize">@dimen/x24dp</item>
+    </style>
+
+    <style name="header_btn">
+        <item name="cornerSize">@dimen/x12dp</item>
+    </style>
+
+    <style name="switch_btn">
+        <item name="cornerSize">@dimen/x12dp</item>
+    </style>
+
+    <style name="circle">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="setting_store_btn">
+        <item name="cornerSize">@dimen/x12dp</item>
+    </style>
+
+    <style name="ads_corner">
+        <item name="cornerSize">@dimen/x6dp</item>
+    </style>
+
+    <style name="app_corner">
+        <item name="cornerSize">@dimen/x12dp</item>
+    </style>
+
+    <style name="AppTheme.AdAttribution">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">@dimen/x12sp</item>
+        <item name="android:text">@string/ad_attribution</item>
+        <item name="android:background">#FFCC66</item>
+        <item name="android:width">@dimen/x15dp</item>
+        <item name="android:height">@dimen/x15dp</item>
+    </style>
+
+
+
+    <style name="ButtonBackTheme">
+        <item name="android:layout_width">@dimen/x32dp</item>
+        <item name="android:layout_height">@dimen/x32dp</item>
+        <item name="contentPadding">@dimen/x4dp</item>
+        <item name="backgroundTint">@null</item>
+        <item name="shapeAppearanceOverlay">@style/remote_btn</item>
+        <item name="elevation">@dimen/x5dp</item>
+    </style>
+
+    <style name="ButtonSettingBackTheme">
+        <item name="android:layout_width">@dimen/x48dp</item>
+        <item name="android:layout_height">@dimen/x48dp</item>
+        <item name="contentPadding">@dimen/x4dp</item>
+        <item name="tint">@color/white</item>
+        <item name="shapeAppearanceOverlay">@style/setting_store_btn</item>
+        <item name="elevation">@dimen/x5dp</item>
+        <item name="strokeColor">#373753</item>
+        <item name="strokeWidth">@dimen/x1dp</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="CircleImage">
+        <item name="cornerSize">12%</item>
+    </style>
+
+    <color name="main_screen_background_color">#ECF7FF</color>
 </resources>
