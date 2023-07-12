@@ -4,7 +4,6 @@
     <string name="inter_ads_id">ca-app-pub-6569277087635149/2336406490</string>
     <string name="open_ads_id">ca-app-pub-6569277087635149/9947303202</string>
     <string name="native_ads_id">ca-app-pub-6569277087635149/3561858259</string>
-    <string name="app_launcher_name">File Manager</string>
     <string name="press_back_again">Press back again to exit</string>
     <string name="go_to_home_folder">Go to home folder</string>
     <string name="set_as_home_folder">Set as home folder</string>
@@ -67,4 +66,5 @@
     <!-- Settings -->
     <string name="enable_root_access">Enable root access</string>
     <string name="press_back_twice">Require pressing Back twice to leave the app</string>
+    <string name="msg_continue">Continue\n</string>
 </resources>
