@@ -12,6 +12,12 @@ class Config(context: Context) : BaseConfig(context) {
         fun newInstance(context: Context) = Config(context)
     }
 
+    var stopShowOnboard: Boolean
+        get() = prefs.getBoolean(STOP_SHOW_ONBOARD, false)
+        set(value) {
+            prefs.edit().putBoolean(STOP_SHOW_ONBOARD, value)
+        }
+
     var showHidden: Boolean
         get() = prefs.getBoolean(SHOW_HIDDEN, false)
         set(show) = prefs.edit().putBoolean(SHOW_HIDDEN, show).apply()
