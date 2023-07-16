@@ -1,9 +1,8 @@
 <resources>
-    <string name="ads_mob_id">ca-app-pub-6569277087635149~2711864915</string>
-    <string name="banner_ads_id">ca-app-pub-6569277087635149/2440348273</string>
-    <string name="inter_ads_id">ca-app-pub-6569277087635149/2336406490</string>
-    <string name="open_ads_id">ca-app-pub-6569277087635149/9947303202</string>
-    <string name="native_ads_id">ca-app-pub-6569277087635149/3561858259</string>
+    <string name="app_name">FileManagerAndroid</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
     <string name="press_back_again">Press back again to exit</string>
     <string name="go_to_home_folder">Go to home folder</string>
     <string name="set_as_home_folder">Set as home folder</string>
@@ -53,18 +52,12 @@
     <string name="audio">Audio</string>
     <string name="documents">Documents</string>
     <string name="downloads">Downloads</string>
-    <string name="ad_attribution">Ad attribution</string>
     <string name="archives">Archives</string>
     <string name="others">Others</string>
     <string name="storage_free">free</string>
     <string name="total_storage">Total storage: %s</string>
-    <string name="default_send_mail_title">Send mail…</string>
-    <string name="default_send_mail_subject_format">%s Support</string>
-    <string name="default_send_mail_footer_format">%1$s %2$s %3$s\nAndroid %4$s \nIMEI %5$s</string>
-    <string name="default_support_email">appforlife.cs@gmail.com</string>
 
     <!-- Settings -->
     <string name="enable_root_access">Enable root access</string>
     <string name="press_back_twice">Require pressing Back twice to leave the app</string>
-    <string name="msg_continue">Continue\n</string>
 </resources>
